@@ -1,0 +1,8 @@
+
+{
+  "name": "PakCast - Modern Weather",
+  "description": "A feature-rich, visually stunning weather application with dynamic backgrounds, 5-day forecast, and real-time search grounding for location details.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
