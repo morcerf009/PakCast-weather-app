@@ -1,7 +1,6 @@
-
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { WeatherData, Unit } from './types';
-import { fetchWeatherByQuery, fetchWeatherByCoords, getAutocompleteSuggestions } from './services/weatherService';
+import { fetchWeatherByQuery, fetchWeatherByCoords } from './services/weatherService';
 import WeatherCard from './components/WeatherCard';
 import Forecast from './components/Forecast';
 import { SearchIcon, MapPinIcon, Loader2Icon, ThermometerIcon, XIcon, CloudSunIcon } from 'lucide-react';
@@ -12,20 +11,18 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState<string>('');
   const [unit, setUnit] = useState<Unit>(Unit.CELSIUS);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [bgImage, setBgImage] = useState<string>('https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?auto=format&fit=crop&w=1920&q=80');
 
   const updateWeather = async (fn: () => Promise<WeatherData>) => {
     setLoading(true);
     setError(null);
-    setSuggestions([]);
     try {
       const data = await fn();
       setWeather(data);
       // Update background based on weather condition
       setBgImage(`https://source.unsplash.com/1600x900/?weather,${data.condition.toLowerCase()}`);
     } catch (err) {
-      setError("Could not find location or weather data. Please try again.");
+      setError(`Error: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setLoading(false);
     }
@@ -55,23 +52,11 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      if (query.length >= 3) {
-        const results = await getAutocompleteSuggestions(query);
-        setSuggestions(results);
-      } else {
-        setSuggestions([]);
-      }
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [query]);
-
-  useEffect(() => {
     updateWeather(() => fetchWeatherByQuery("London"));
   }, []);
 
   return (
-    <div 
+    <div
       className="weather-bg relative min-h-screen transition-all duration-1000"
       style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${bgImage}')` }}
     >
@@ -87,14 +72,14 @@ const App: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <button 
+          <button
             onClick={() => setUnit(u => u === Unit.CELSIUS ? Unit.FAHRENHEIT : Unit.CELSIUS)}
             className="glass p-3 rounded-full hover:bg-white/30 transition-all flex items-center gap-2 border border-white/20"
           >
             <ThermometerIcon className="w-5 h-5 text-blue-200" />
             <span className="font-bold text-sm">°{unit}</span>
           </button>
-          <button 
+          <button
             onClick={handleGeolocation}
             className="glass p-3 rounded-full hover:bg-white/30 transition-all border border-white/20"
             title="Use my location"
@@ -107,7 +92,7 @@ const App: React.FC = () => {
       <main className="container mx-auto px-4 pt-32 pb-12 flex flex-col items-center">
         <div className="w-full max-w-xl mb-12 relative group">
           <form onSubmit={handleSearch} className="relative">
-            <input 
+            <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -116,7 +101,7 @@ const App: React.FC = () => {
             />
             <SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 text-white/50 w-6 h-6" />
             {query && (
-              <button 
+              <button
                 type="button"
                 onClick={() => setQuery('')}
                 className="absolute right-5 top-1/2 -translate-y-1/2 hover:text-red-400 transition-colors"
@@ -125,23 +110,6 @@ const App: React.FC = () => {
               </button>
             )}
           </form>
-
-          {suggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 glass rounded-2xl overflow-hidden shadow-2xl z-40 border border-white/10">
-              {suggestions.map((city, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setQuery(city);
-                    updateWeather(() => fetchWeatherByQuery(city));
-                  }}
-                  className="w-full text-left px-6 py-4 hover:bg-white/20 transition-all border-b border-white/5 last:border-0"
-                >
-                  {city}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
 
         {error && (
