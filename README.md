@@ -1,58 +1,39 @@
-# PakCast - Modern Weather Application
+🌦 PakCast – Modern Weather Application
 
-A sleek, modern weather dashboard built with React, TypeScript, and Vite. Features a responsive design, real-time weather data via OpenWeatherMap API, and dynamic background themes.
+PakCast is a modern, responsive weather application built with React, TypeScript, and Vite. It provides real-time weather updates, multi-day forecasts, and location-based weather information through a clean and visually engaging user interface.
 
-![PakCast Preview](https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6)
+✨ Features
 
-## Features
+🌤 Real-Time Weather — View current weather conditions for cities worldwide
 
-- 🌤️ **Real-time Weather**: Current conditions for any city worldwide.
-- 📅 **5-Day Forecast**: Accurate daily forecasts.
-- 🌡️ **Unit Conversion**: Toggle between Celsius and Fahrenheit.
-- 🎨 **Dynamic UI**: Beautiful glassmorphism effects and adaptive backgrounds.
-- 📍 **Geolocation**: Auto-detect your local weather.
+📅 5-Day Forecast — Accurate and easy-to-read weather forecasts
 
-## Getting Started
+🌡 Unit Conversion — Toggle between Celsius and Fahrenheit
 
-### Prerequisites
+📍 Geolocation Support — Automatically detect and display local weather
 
-- Node.js (v18 or higher)
-- An API Key from [OpenWeatherMap](https://openweathermap.org/api)
+🎨 Modern UI — Glassmorphism design with dynamic, weather-based backgrounds
 
-### Installation
+📱 Responsive Design — Optimized for both desktop and mobile devices
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/pakcast.git
-   cd pakcast
-   ```
+🛠 Tech Stack
 
-2. **Install Dependencies**
-   ```bash
-   npm install
-   ```
+React 19
 
-3. **Configure Environment**
-   Create a `.env.local` file in the root directory:
-   ```env
-   VITE_OPENWEATHER_API_KEY=your_openweathermap_api_key_here
-   ```
+TypeScript
 
-4. **Run Locally**
-   ```bash
-   npm run dev
-   ```
+Vite
 
-   The app will run at `http://localhost:3000`.
+Tailwind CSS
 
-## Built With
+Lucide React
 
-- React 19
-- TypeScript
-- Vite
-- TailwindCSS
-- Lucide React
+OpenWeather API
 
-## License
+🌐 Live Demo
 
-This project is open source and available under the [MIT License](LICENSE).
+👉 https://pak-cast-weather-app-git-main-muzzammill-abbas-projects.vercel.app/
+
+📄 License
+
+This project is open source and available under the MIT License.
