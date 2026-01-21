@@ -13,6 +13,30 @@ const App: React.FC = () => {
   const [unit, setUnit] = useState<Unit>(Unit.CELSIUS);
   const [bgImage, setBgImage] = useState<string>('https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?auto=format&fit=crop&w=1920&q=80');
 
+  // Reliable static background images from Unsplash
+  const weatherBackgrounds: { [key: string]: string } = {
+    clear: 'https://images.unsplash.com/photo-1601297183305-6df142704ea2?auto=format&fit=crop&w=1920&q=80', // Sunny
+    clouds: 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=1920&q=80', // Cloudy
+    rain: 'https://images.unsplash.com/photo-1519692933481-e162a57d6721?auto=format&fit=crop&w=1920&q=80', // Rainy
+    drizzle: 'https://images.unsplash.com/photo-1556485689-33e55ab56ce0?auto=format&fit=crop&w=1920&q=80', // Drizzle
+    thunderstorm: 'https://images.unsplash.com/photo-1605727216801-e27ce1d0cc28?auto=format&fit=crop&w=1920&q=80', // Storm
+    snow: 'https://images.unsplash.com/photo-1477601263568-180e2c6d046e?auto=format&fit=crop&w=1920&q=80', // Snow
+    mist: 'https://images.unsplash.com/photo-1485230905346-71acb9518d9c?auto=format&fit=crop&w=1920&q=80', // Mist/Fog
+    default: 'https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?auto=format&fit=crop&w=1920&q=80' // Default
+  };
+
+  const getBackgroundImage = (condition: string): string => {
+    const c = condition.toLowerCase();
+    if (c.includes('clear') || c.includes('sun')) return weatherBackgrounds.clear;
+    if (c.includes('cloud')) return weatherBackgrounds.clouds;
+    if (c.includes('rain')) return weatherBackgrounds.rain;
+    if (c.includes('drizzle')) return weatherBackgrounds.drizzle;
+    if (c.includes('thunder') || c.includes('storm')) return weatherBackgrounds.thunderstorm;
+    if (c.includes('snow')) return weatherBackgrounds.snow;
+    if (c.includes('mist') || c.includes('fog')) return weatherBackgrounds.mist;
+    return weatherBackgrounds.default;
+  };
+
   const updateWeather = async (fn: () => Promise<WeatherData>) => {
     setLoading(true);
     setError(null);
@@ -20,7 +44,7 @@ const App: React.FC = () => {
       const data = await fn();
       setWeather(data);
       // Update background based on weather condition
-      setBgImage(`https://source.unsplash.com/1600x900/?weather,${data.condition.toLowerCase()}`);
+      setBgImage(getBackgroundImage(data.condition));
     } catch (err) {
       setError(`Error: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
